@@ -1,0 +1,35 @@
+.searchbox{
+	text-align: center;
+}
+.green_window{
+	display:inline-block;
+	width:366px; heigth:34px;
+	border:3px solid #2db400;
+	background:white;
+}
+
+.input_text{
+	width:348px; heigth:21px;
+	margin: 6px 0 0 9px;
+	border:0;
+	line-heigth:21px;
+	font-weigth:bold;
+	font-size:16px;
+	outline:none;
+}
+
+.srch_submit{
+	width: 54px; height: 40px;
+	margin:0; 
+	border:0;
+	vertical-align:top;
+	background:@33B600;
+	color: white;
+	font-weight: bold;
+	border-radius: 1px;
+	cursor: pointer;
+}
+
+.srch_submit:hover {
+	background: #56C82C;
+}

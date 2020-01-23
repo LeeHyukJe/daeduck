@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="queryapi530">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/queryapi530.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

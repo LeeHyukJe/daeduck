@@ -1,0 +1,30 @@
+.popular {
+  width: 130px;
+  position: absolute;
+  z-index: 1;
+  top: 20px;
+  right: 10px;
+  background: #eee;
+  overflow-x: hidden;
+  padding: 8px 0;
+}
+.popular li{
+	padding:6px 8px 6px 16px;
+	text-decoration:none;
+	font-size:15px;
+	color:#818181;
+	display:block;
+}
+
+.popular div{
+	padding:6px 8px 6px 16px;
+	text-decoration:none;
+	font-size:15px;
+	color:#818181;
+	display:block;
+}
+
+.popular li:hover{
+	color:red;
+}
+

@@ -242,18 +242,6 @@ public class SearchController {
 	}
 	
 
-	// 컬렉션 분기 처리
-	public void selectView(Model model, WNSearchInfo searchInfo, SrchParamVO value, List<Map<String, Object>> list) {
-		log.info(value.getCollection() + " view 이동");
-		// model.addAttribute("cateBbsName",commonCategory(searchInfo,
-		// "bbs","FolderPath",depth));
-
-		model.addAttribute("value", value);
-		model.addAttribute(value.getCollection(), list);
-		model.addAttribute("totalCount", searchInfo.getResultTotalCount(value.getCollection()));
-		model.addAttribute("count", searchInfo.getResultCount(value.getCollection()));
-		// model.addAttribute("depth", depth);
-	}
 
 	public Map<String, List<Map<String, String>>> commonCategory(WNSearchInfo searchInfo, String collectionName,
 			String categoryField, int depth) {

@@ -15,11 +15,11 @@ var arkUpId = "ark_up";							// 자동완성 up 이미지 <div> 의 id을 설�
 var arkDownId = "ark_down";						// 자동완성 down 이미지 <div> 의 id을 설정한다
 var totalFwCount = 0;							// 전방 검색 전체 개수
 var totalRwCount = 0;							// 후방 검색 전체 개수
-var target = "";								// ARK 웹서버 설정파일의 목록에 있는 추천어 서비스 대상을 지정한다.
+var target = "common";								// ARK 웹서버 설정파일의 목록에 있는 추천어 서비스 대상을 지정한다.
 var charset = "utf-8";							// 인코딩 설정 (인코딩이 utf-8이 아닐 경우 8859_1 로 설정해야함)
 var datatype = "json";							// 반환받을 Data의 타입을 설정. XML 과 JSON이 가능 (xml | json)
-var arkPath = "./ark";						// 자동완성 경로
-var transURL = arkPath + "/ark_trans.jsp";		// trans 페이지의 URL을 설정한다.
+var arkPath = "/ark";						// 자동완성 경로
+var transURL = arkPath;	// trans 페이지의 URL을 설정한다.
 var tempQuery = "";
 
 /**
@@ -306,12 +306,21 @@ function requestArkJson(query) {
 
 	cursorPos = -1;
 
+	var params={
+		"convert":g_oConvert,
+		"target":target,
+		"charset":charset,
+		"query":query,
+		"datatype": datatype
+	}
+
 	$.ajaxSetup({cache:false});
 	$.ajax({
-		url: transURL,
+		url: '/ark',
 		type: "POST",
 		dataType: "json",
-		data: {"convert":g_oConvert, "target":target, "charset":charset, "query":query, "datatype": datatype},
+		data: JSON.stringify(params),
+		contentType: "application/json",
 		success: function(data) {
 			if(data.result.length <= 0) {
 				totalFwCount = 0;

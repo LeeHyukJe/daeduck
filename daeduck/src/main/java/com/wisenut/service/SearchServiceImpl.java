@@ -39,8 +39,9 @@ public class SearchServiceImpl implements SearchService {
 
 	// 디버깅 보기 설정
 	boolean isDebug = false;
-	
-	private String auth = "";
+
+	private String auth = ""; // 전자결재용 권한 변수
+	private String bbsAuth = ""; // 통합게시판 권한 변수
 
 	@Override
 	public WNSearchInfo setting(SrchParamVO value) throws Exception {
@@ -71,6 +72,8 @@ public class SearchServiceImpl implements SearchService {
 		wnSearchInfo = new WNSearchInfo.WNSearchBuilder().isDebug(isDebug).isUidSrch(false).collections(collections)
 				.searchFields(searchFields).Build();
 
+		log.info("검색엔지 객체 " + wnSearchInfo == null ? "널이다" : "널이 아니다.");
+
 		int viewResultCount = value.getListCount(); // 통합검색이 아닐 경우 보여주는 갯수
 
 		if (value.getCollection().equals("ALL") || value.getCollection().equals(""))
@@ -84,7 +87,7 @@ public class SearchServiceImpl implements SearchService {
 			if (!value.getQuery().equals("")) {
 				// wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.SORT_FIELD,
 				// value.getSort() + "/DESC");
-				wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.SORT_FIELD, "RANK/DESC");
+				wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.SORT_FIELD, "DATE/DESC");
 			} else {
 				wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.DATE_RANGE,
 						START_DATE.replaceAll("[.]", "/") + ",2030/01/01,-");
@@ -122,49 +125,89 @@ public class SearchServiceImpl implements SearchService {
 					wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.DATE_RANGE,
 							value.getStartDate().replaceAll("[.]", "/") + "," + format.format(date) + ",-");
 					// System.out.println(value.getStartDate() + ","+format.format(date)+",-");
-				}
-				else { // 마지막 날짜가 있는 경우
+				} else { // 마지막 날짜가 있는 경우
 					wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.DATE_RANGE,
-							value.getStartDate().replaceAll("[.]", "/") + "," + value.getEndDate().replaceAll("[.]", "/") + ",-");
+							value.getStartDate().replaceAll("[.]", "/") + ","
+									+ value.getEndDate().replaceAll("[.]", "/") + ",-");
 				}
 			}
 
 			// 정렬 선택
-			if (!value.getSort().equals("")) {
+//			if (!value.getSort().equals("")) {
+//				wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.SORT_FIELD, value.getSort() + "/DESC");
+//			}
 
-				wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.SORT_FIELD, value.getSort() + "/DESC");
-			}
-
-			// 필터쿼리 처기
+			// app 컬렉션 설정하는 부분
 			if (collections[i].equals("app")) {
-				// 권한 처리
-				if (!value.getAuthority().equals("") || !value.getAuthorityapdept().equals("")) {
-					auth += value.getAuthority() + "|" + value.getAuthorityapdept() + "|";
-				}
-				if (!value.getTech().equals(""))
-					wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.PREFIX_FIELD,
-							"<TechnologyDOC:contains:" + value.getTech() + ">");
-			} else if (collections[i].equals("bbs")) {
-				if (!value.getAuthority().equals(""))
-					wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.EXQUERY_FIELD,
-							"<authority:contains:" + value.getAuthority() + ">");
-			}
-			
-			// 전자결재 외 필터 쿼리 적용 및 전체 필터 쿼리 적용
-			if(!value.getAuthorityex().equals("") || !value.getAuthoritydept().equals("")) {
-				auth += value.getAuthorityex() +"|" + value.getAuthoritydept();
 				
-				wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.EXQUERY_FIELD, "<AUTHORITY:contains:"+auth+">");
+
+				if (!value.getTech().equals("")) { // 기술보고서(tech) 여부 파라미터가 있을 경우
+					if (!value.getAuthority().equals("") || !value.getAuthorityapdept().equals("")) {
+						auth += value.getAuthority() + "|" + value.getAuthorityapdept() + "|";
+						wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.EXQUERY_FIELD,
+								"<AUTHORITY:contains:" + auth + "> <TechnologyDOC:contains:" + value.getTech() + ">");
+					} else {
+						wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.EXQUERY_FIELD,
+								"<TechnologyDOC:contains:" + value.getTech() + ">");
+					}
+				} else if (!value.getAuthority().equals("") || !value.getAuthorityapdept().equals("")) { // 기술보고서 여부
+																											// 파라미터가 없을
+																											// 경우
+					auth += value.getAuthority() + "|" + value.getAuthorityapdept() + "|";
+					wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.EXQUERY_FIELD,
+							"<AUTHORITY:contains:" + auth + ">");
+				}
+
+				// 전자결재 정렬 셋팅
+				if (!value.getSort().equals("")) {
+					wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.SORT_FIELD, "DATE/DESC");
+				}else {
+					wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.SORT_FIELD, "DATE/DESC");
+				}
+
 			}
 
-			// 카테고리 그룹핑
-			if (collections[i].equals("standard")) {
-				wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.CATEGORY_GROUPBY, "FolderPath:1,2/SC");
-			}
-
+			// 컬렉션 bbs 설정
 			if (collections[i].equals("bbs")) {
+				if (!value.getAuthorityex().equals("") || !value.getAuthoritydept().equals("")) {
+					bbsAuth += value.getAuthorityex() + "|" + value.getAuthoritydept() + "|";
+					wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.EXQUERY_FIELD,
+							"<Authority1:contains:" + bbsAuth + ">");
+				}
+
+				wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.SORT_FIELD, "DATE/DESC");
+
+				// 카테고리 그룹핑
 				wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.CATEGORY_GROUPBY, "FolderPath:1,2,3/SC");
 			}
+
+			// 전자결재 외 필터 쿼리 적용 및 전체 필터 쿼리 적용
+//			if (!value.getAuthorityex().equals("") || !value.getAuthoritydept().equals("")) { // 이 두개의 파라미터는 반드시
+//																								// 존재해야 하
+//				auth += value.getAuthorityex() + "|" + value.getAuthoritydept();
+//
+//				wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.EXQUERY_FIELD,
+//						"<AUTHORITY:contains:" + auth + "> <TechnologyDOC:contains:" + value.getTech() + ">");
+//			}
+
+			// 표준문서 설정
+			if (collections[i].equals("standard")) {
+
+				// 카테고리 그룹핑
+				wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.CATEGORY_GROUPBY, "FolderPath:1,2/SC");
+
+				wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.SORT_FIELD, "DATE/DESC");
+			}
+
+			// 기술문서 설정
+			if (collections[i].equals("technology")) {
+				wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.EXQUERY_FIELD,
+						"<TechnologyDOC:contains:Y>");
+			}
+
+//			if (collections[i].equals("bbs")) {
+//				wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.CATEGORY_GROUPBY, "FolderPath:1,2,3/SC");
+//			}
 
 			// 카테고리 쿼리
 			if (collections[i].equals("standard") || collections[i].equals("bbs")) {
@@ -172,17 +215,29 @@ public class SearchServiceImpl implements SearchService {
 					wnSearchInfo.setCollectionInfoValue(collections[i], WNDefine.CATEGORY_QUERY,
 							"FolderPath|" + value.getCateQuery());
 			}
+			
+			
+			
+			if(collections[i].equals("ecn")) {
+				
+			}
 
 		}
 		// System.out.println("현재VO " + value.toString());
 		wnSearchInfo.search(value.getRealQuery(), isRealTimeKeyword, WNDefine.CONNECTION_CLOSE, useSuggestedQuery);
 
 		String debugMsg = wnSearchInfo.printDebug() != null ? wnSearchInfo.printDebug().trim() : "";
-		log.info("로그로그로그 " + debugMsg);
+		// log.info("로그로그로그 " + debugMsg);
 
 //		if (!value.getCollection().equals("ALL")) {
 //			String paging = wnSearchInfo.getPageLinks(wnSearchInfo, 10, 10, 10);
 //			value.setPaging(paging);
+//		}
+
+		log.info("파라미터: " + value.toString());
+
+//		if ( wnSearchInfo != null ) {
+//			wnSearchInfo.closeServer();
 //		}
 
 		return wnSearchInfo;

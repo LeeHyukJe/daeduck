@@ -27,6 +27,7 @@
 			<div>Body: ${entry.BODY }</div>
 			<div>CreatorName: ${entry.CreatorName }</div>
 			<div>FolderPath: ${entry.FolderPath }</div>
+			<div>DATE: ${entry.DATE }</div>
 			<hr>
 		</c:forEach>
 		<div>검색 건수: ${count}/${totalCount }</div>
@@ -80,11 +81,15 @@
 					
 				}
 
+				Handlebars.registerHelper('level',function(parent,target,options){
+					if(parent == target)
+						return options.fn(this);
+					else
+						return options.inverse(this);
+				})
+
 				var source = $('#entry-template').html();
 				var template = Handlebars.compile(source);
-				
-				var value = JSON.stringify(data);    
-				console.log('json 변환 '+value)
 				var html = template(data);
 				$('#standardcategory').html(html);
 			},
@@ -107,6 +112,7 @@
 		})
 	</script>
 
+	<!--
 	<script id="entry-template" type="text/x-handlebars-template">
 		<li>
 			{{dep1.0.cateName}} 
@@ -134,6 +140,23 @@
 			{{/dep2}}
 		</li>
 	</script>
+	-->
 
+	<script id="entry-template" type="text/x-handlebars-template">
+		{{#dep1}}
+		<li>
+			{{cateName}}
+			{{#each ../dep2}}
+			{{#level ../cateName parent}} 
+			<ul>
+				<li>
+					<a href="#" onClick="javascript:cateQuery('{{../../cateName}}','{{cateName1}}')">{{cateName1}}({{count1}})</a> 
+				</li>
+			</ul>
+			{{/level}}
+			{{/each}}
+		</li>
+		{{/dep1}}
+	</script>
 
 </html>

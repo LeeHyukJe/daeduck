@@ -3,17 +3,18 @@
 }
 .green_window{
 	display:inline-block;
-	width:366px; heigth:34px;
+	width:366px; 
+	height:34px;
 	border:3px solid #2db400;
 	background:white;
 }
 
 .input_text{
-	width:348px; heigth:21px;
+	width:348px; height:21px;
 	margin: 6px 0 0 9px;
 	border:0;
-	line-heigth:21px;
-	font-weigth:bold;
+	line-height:21px;
+	font-weight:bold;
 	font-size:16px;
 	outline:none;
 }
@@ -23,7 +24,7 @@
 	margin:0; 
 	border:0;
 	vertical-align:top;
-	background:@33B600;
+	background:#2db400;
 	color: white;
 	font-weight: bold;
 	border-radius: 1px;

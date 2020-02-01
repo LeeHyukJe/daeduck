@@ -60,15 +60,14 @@ public class SearchController {
 			}
 
 			// 품질관리 통합검색 출력
-			for (int i = 3; i < WNCollection.COLLECTIONS.length; i++) {
+			for (int i = 4; i < WNCollection.COLLECTIONS.length; i++) {
 				totalQualityResult.put(WNCollection.COLLECTIONS[i].toUpperCase(),
 						resultManageService.getViewResult(searchInfo, WNCollection.COLLECTIONS[i]));
 			}
 
-			log.info("품질관리 출력 " + totalQualityResult);
+			// log.info("품질관리 출력 " + totalQualityResult);
 
-			log.info("파라미터: " + value.toString());
-			log.info("통합결과: " + totalResult.toString());
+			// log.info("통합결과: " + totalResult.toString());
 
 			// 1레벨 카테고리
 			cateStandardName = commonCategory(searchInfo, "standard", "FolderPath", depth);
@@ -80,10 +79,12 @@ public class SearchController {
 			model.addAttribute("total", totalResult);
 			model.addAttribute("value", value);
 
-			model.addAttribute("totalQuality", totalQualityResult); //품질관리 통합검색
+			model.addAttribute("totalQuality", totalQualityResult); // 품질관리 통합검색
 			model.addAttribute("Appcount", searchInfo.getResultTotalCount("app")); // app 검색결과 건수
 			model.addAttribute("Bbscount", searchInfo.getResultTotalCount("bbs")); // bbs 검색 결과 건수
-			model.addAttribute("standardcount", searchInfo.getResultTotalCount("standard"));
+			model.addAttribute("standardcount", searchInfo.getResultTotalCount("standard")); // standard 검색 결과 건수
+			model.addAttribute("Technologycount", searchInfo.getResultTotalCount("technology")); // technology 검색결과 건수
+
 			model.addAttribute("cateStandardName", cateStandardName);
 			model.addAttribute("cateBbsName", cateBbsName);
 			model.addAttribute("depth", depth);
@@ -115,11 +116,11 @@ public class SearchController {
 
 			for (int i = 0; i < resultServices.size(); i++) {
 				if (value.getCollection().equals(WNCollection.COLLECTIONS[i])) { // 컬렉션 찾기
-					list = resultServices.get(i).getViewResult(searchService.setting(value), WNCollection.COLLECTIONS[i]); // 컬렉션 검색 결과 리스트
+					list = resultServices.get(i).getViewResult(searchInfo, WNCollection.COLLECTIONS[i]); // 컬렉션 검색 결과
+																											// 리스트
 				}
 			}
-			// log.info("data " + list.toString());
-			log.info("파라미터 " + value.toString());
+			// log.info("결과 " + list);
 
 			log.info(value.getCollection() + " view 이동");
 			model.addAttribute("value", value);
@@ -172,15 +173,23 @@ public class SearchController {
 					Map<String, String> map2 = new HashMap<>();
 					String cate2Name = searchInfo.getCategoryName(value.getCollection(), "FolderPath", 2, j);
 					int cate2Count = searchInfo.getDocumentCountInCategory(value.getCollection(), "FolderPath", 2, j);
-					if (cateName.equals(cate2Name.split(">")[0]) && i == 0) { // 첫번째 뎁스 중 에서 첫번째 카테고리와 같을 경우
-						map2.put("cateName1", cate2Name.substring(cate2Name.indexOf(">") + 1, cate2Name.length()));
+//					if (cateName.equals(cate2Name.split(">")[0]) && i == 0) { // 첫번째 뎁스 중 에서 첫번째 카테고리와 같을 경우
+//						map2.put("cateName1", cate2Name.substring(cate2Name.indexOf(">") + 1, cate2Name.length()));
+//						map2.put("count1", cate2Count + "");
+//
+//						list2.add(map2);
+//
+//					} else if (cateName.equals(cate2Name.split(">")[0]) && i == 1) { // 첫번째 뎁스 중에서 두번째 카테고리와 같을 경우
+//						map2.put("cateName2", cate2Name.substring(cate2Name.indexOf(">") + 1, cate2Name.length()));
+//						map2.put("count2", cate2Count + "");
+//
+//						list2.add(map2);
+//					}
+
+					if (cateName.equals(cate2Name.split(">")[0])) {
+						map2.put("cateName1", cate2Name.split(">")[1]);
 						map2.put("count1", cate2Count + "");
-
-						list2.add(map2);
-
-					} else if (cateName.equals(cate2Name.split(">")[0]) && i == 1) { // 첫번째 뎁스 중에서 두번째 카테고리와 같을 경우
-						map2.put("cateName2", cate2Name.substring(cate2Name.indexOf(">") + 1, cate2Name.length()));
-						map2.put("count2", cate2Count + "");
+						map2.put("parent", cate2Name.split(">")[0]);
 
 						list2.add(map2);
 					}
@@ -189,7 +198,8 @@ public class SearchController {
 					for (int k = 0; k < catedepth3Count; k++) {
 						Map<String, String> map3 = new HashMap<>();
 						String cate3Name = searchInfo.getCategoryName(value.getCollection(), "FolderPath", 3, k);
-						int cate3Count = searchInfo.getDocumentCountInCategory(value.getCollection(), "FolderPath", 3,k);
+						int cate3Count = searchInfo.getDocumentCountInCategory(value.getCollection(), "FolderPath", 3,
+								k);
 
 						/**
 						 * if(cate2Name.split(">")[1].equals(cate3Name.split(">")[1]) &&
@@ -218,30 +228,50 @@ public class SearchController {
 		}
 
 	}
-	
-	@RequestMapping(value="/colquality", method= {RequestMethod.GET, RequestMethod.POST})
-	public String collectionQuality(@ModelAttribute SrchParamVO value, Model model, @RequestParam String colflag){
+
+	@RequestMapping(value = "/colquality", method = { RequestMethod.GET, RequestMethod.POST })
+	public String collectionQuality(@ModelAttribute SrchParamVO value, Model model, @RequestParam String colflag) {
 		WNSearchInfo searchInfo = null;
 		Map<String, List<Map<String, Object>>> totalQualityResult = new HashMap<>();
+		log.info("품질관리 파라미터 " + value);
+		String paging = "";
 		try {
+			int collTarget = 0;
 			searchInfo = searchService.setting(value);
 			// 품질관리 통합검색 출력
-			for(int i = 3; i < WNCollection.COLLECTIONS.length; i++) {
-				totalQualityResult.put(WNCollection.COLLECTIONS[i].toUpperCase(),
-						resultManageService.getViewResult(searchInfo, WNCollection.COLLECTIONS[i]));
+			for (int index = 0; index < WNCollection.COLLECTIONS.length; index++) {
+				if (WNCollection.COLLECTIONS[index].equals(value.getCollection()))
+					collTarget = index;
 			}
-			log.info("품질관리 별 검색하기 "+totalQualityResult);
-			log.info("품질관리 플래그 "+colflag);
-			model.addAttribute("colflag",colflag);
+//			for(int i = 3; i < WNCollection.COLLECTIONS.length; i++) {
+//				totalQualityResult.put(WNCollection.COLLECTIONS[i].toUpperCase(),
+//						resultManageService.getViewResult(searchInfo, WNCollection.COLLECTIONS[i]));
+//			}
+			totalQualityResult.put(WNCollection.COLLECTIONS[collTarget].toUpperCase(),
+					resultManageService.getViewResult(searchInfo, WNCollection.COLLECTIONS[collTarget]));
+
+			log.info("품질관리 별 검색하기 " + totalQualityResult);
+			log.info("품질관리 플래그 " + colflag);
+
+			model.addAttribute("totalCount", searchInfo.getResultTotalCount(value.getCollection()));
+			model.addAttribute("count", searchInfo.getResultCount(value.getCollection()) + value.getStartCount());
+
+			if (searchInfo.getResultTotalCount(value.getCollection()) > searchInfo
+					.getResultCount(value.getCollection())) {
+				paging = searchInfo.getPageLinks(value.getStartCount(),
+						searchInfo.getResultTotalCount(value.getCollection()), 10, 10);
+			}
+
+			model.addAttribute("value", value);
+			model.addAttribute("colflag", colflag);
 			model.addAttribute("totalQuality", totalQualityResult);
+			model.addAttribute("paging", paging);
 			return "quality";
-		}catch(Exception e) {
-			
+		} catch (Exception e) {
+
 			return "home";
 		}
 	}
-	
-
 
 	public Map<String, List<Map<String, String>>> commonCategory(WNSearchInfo searchInfo, String collectionName,
 			String categoryField, int depth) {

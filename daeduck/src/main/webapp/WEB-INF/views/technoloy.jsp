@@ -4,7 +4,7 @@
 
 <html>
 <head>
-	<title>전자결재 페이지</title>
+	<title>기술문서 페이지</title>
 	<meta charset="UTF-8" />
 		<script src="/resources/js/jquery-3.4.1.min.js"></script>
 <script src="/resources/js/category.js"></script>
@@ -20,8 +20,8 @@
 	<%@ include file="./searchbox/searchbox.jsp" %>
 	
 	<div class="main">
-	<div>전자결재 검색 결과 총 '${totalCount}' 건이 검색 되었습니다!.</div>   
-		<c:forEach var="entry" items="${app }">
+	<div>기술문서 검색 결과 총 '${totalCount}' 건이 검색 되었습니다!.</div>   
+		<c:forEach var="entry" items="${technology }">
 			<div>
 				<a href="#" 
 				onClick="javascript:popupOpen('https://gw.portal.daeduck.com/Website/Approval/Forms/Form.aspx?mode=COMPLETE&piid=${entry.DOCID }','전자결재','width=950','')">FORM_NAME:
@@ -30,10 +30,9 @@
 			<div>BODY: ${entry.BODY }</div>
 			<div>SUBJECT: ${entry.SUBJECT }</div>
 			<div>AUTHORITY${entry.AUTHORITY }</div>
-			<div>TYPE: ${entry.TYPE }</div>
+			<!--div>TYPE: ${entry.TYPE }</div-->
 			<div>DATE : ${entry.DATE  }</div>
 			<div>TechnologyDOC : ${entry.TechnologyDOC  }</div>
-			<div>첨부파일 이름 : ${entry.ATTACHNAME  }</div>
 			<hr>
 		</c:forEach>
 		<div>검색 건수: ${count}/${totalCount }</div>  

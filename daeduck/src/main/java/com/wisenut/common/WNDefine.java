@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class WNDefine {
-	final static int CONNECTION_TIMEOUT = 20000;
+	final static int CONNECTION_TIMEOUT = 50000;
 	final static String CHARSET = "UTF-8";
 	final static int REALTIME_COUNT=100;
 	final static int PAGE_SCALE = 10; //view page list count

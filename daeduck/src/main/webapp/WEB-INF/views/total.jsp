@@ -8,10 +8,18 @@
 <title>통합검색 페이지</title>
 <meta charset="UTF-8" />
 <script src="/resources/js/jquery.min.js"></script>
+<script src="/resources/js/jquery-ui.min.js"></script>
 <script src="/resources/js/beta.fix.js"></script>
+
+<script src="/resources/js/ark.js"></script>
+
+<!--
+<script src="/resources/js/autocomplete.js"></script>
+-->
 <script src="/resources/js/category.js"></script>
 <script src="/resources/js/popular.js"></script>
 <script src="/resources/js/search.js"></script>
+<script src="/resources/js/datepicker.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.2/handlebars.js"></script>
 
@@ -36,7 +44,7 @@
 	<%@ include file="./sidenav/sidenav.jsp"%>
 	
 
-	<div class="popular" id="pop"></div>
+	<%@ include file="./popular/popular.jsp"%>
 
 	<ul class="mykeyword" id="mykeyword">
 	</ul>
@@ -44,6 +52,7 @@
 	<div class="main">
 		<div>통합 검색 결과 수: ${totalCount}</div>
 		<div>전자결재 검색 결과 --> ${Appcount }</div>
+		
 		<c:forEach var="entry" items="${total.APP }">
 			<div>
 				<a href="#" 
@@ -55,20 +64,27 @@
 			<div>AUTHORITY${entry.AUTHORITY }</div>
 			<div>TYPE: ${entry.TYPE }</div>
 			<div>DATE : ${entry.DATE  }</div>
+			
+			<div>TechnologyDOC : ${entry.TechnologyDOC  }</div>
 			<hr>
 		</c:forEach>
+		
+		
 		<hr>
 		<hr>
 		<div>게시판 검색 결과 --> ${Bbscount }</div>
 		<c:forEach var="entry" items="${total.BBS }">
+			<c:if test="${!empty entry}">
 			<div>
 				SUBJECT:<a href='https://gw.portal.daeduck.com/WebSite/Basic/Board/BoardView.aspx?system=Board&BoardType=Normal&fdid=${entry.FD_ID}&MsgId=${entry.DOCID}&BoardGubun=Normal' target=" _blank"> ${entry.SUBJECT }</a>
 			</div>
 			<div>BODY: ${entry.BODY }</div>
 			<div>CreatorName: ${entry.CreatorName }</div>
 			<div>FolderPath: ${entry.FolderPath }</div>
+			<div>Authority1: ${entry.Authority1 }</div>
 			<div>DATE : ${entry.DATE  }</div>
 			<hr>
+			</c:if>
 		</c:forEach>
 		<hr>
 		<hr>
@@ -84,6 +100,23 @@
 			<hr>
 		</c:forEach>
 
+		<hr>
+		<hr>
+		<div>기술문서 검색 결과 --> ${Technologycount }</div>
+		<c:forEach var="entry" items="${total.TECHNOLOGY }">
+			<div>
+				<a href="#" 
+				onClick="javascript:popupOpen('https://gw.portal.daeduck.com/Website/Approval/Forms/Form.aspx?mode=COMPLETE&piid=${entry.DOCID }','전자결재','width=950','')">FORM_NAME:
+					${entry.FORM_NAME }</a>
+			</div>
+			<div>BODY: ${entry.BODY }</div>
+			<div>SUBJECT: ${entry.SUBJECT }</div>
+			<div>AUTHORITY${entry.AUTHORITY }</div>
+			<!--div>TYPE: ${entry.TYPE }</div-->
+			<div>DATE : ${entry.DATE  }</div>
+			<div>TechnologyDOC : ${entry.TechnologyDOC  }</div>
+			<hr>
+		</c:forEach>
 		<hr>
 		<hr>
 		<div>품질관리 검색 결과</div>
@@ -119,6 +152,8 @@
 			<hr>
 		</c:forEach>
 	</div>
+
+	<div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div>
 </body>
 
 <script>

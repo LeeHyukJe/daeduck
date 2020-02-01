@@ -8,8 +8,8 @@ public class WNCollection {
     public static String MANAGER_IP = "192.168.8.36";
     public static int MANAGER_PORT = 7800;
 
-    public static String[] COLLECTIONS = new String[]{"app","bbs","standard","mrb","ppap","ecn","change","ocap","analysis","library1","library2","raw"};
-	public static String[] COLLECTIONS_NAME = new String[]{"app","bbs","standard","mrb","ppap","ecn","change","ocap","analysis","library1","library2","raw"};
+    public static String[] COLLECTIONS = new String[]{"app","bbs","standard","technology","mrb","ppap","ecn","change","ocap","analysis","library1","library2","raw"};
+	public static String[] COLLECTIONS_NAME = new String[]{"app","bbs","standard","technology","mrb","ppap","ecn","change","ocap","analysis","library1","library2","raw"};
 
     public static String[] MERGE_COLLECTIONS = new String[]{""};
 
@@ -71,7 +71,7 @@ public class WNCollection {
     			"RANK/DESC,DATE/DESC",  // set sort field (field,order) multi sort '/'
     			"basic,rpfmo,100",  // set sort field (field,order) multi sort '/'
     			"SUBJECT,BODY,CreatorName",// set search field
-    			"DOCID,FD_ID,FolderName,FolderPath,SUBJECT,BODY/200,ExpiredDate,DATE,CreatorName,CreatorDept,Authority1,Authority2,ATTACHNAME,ATTACH,ALIAS",// set document field
+    			"DOCID,FD_ID,FolderName,FolderPath,SUBJECT,BODY,ExpiredDate,DATE,CreatorName,CreatorDept,ATTACHNAME,ATTACH,Authority1,ALIAS",// set document field
     			"", // set date range
     			"", // set rank range
     			"", // set prefix query, example: <fieldname:contains:value1>|<fieldname:contains:value2>/1,  (fieldname:contains:value) and ' ', or '|', not '!' / operator (AND:1, OR:0)
@@ -84,7 +84,7 @@ public class WNCollection {
     			"", // set categoryGroupBy (fieldname:value)
     			"", // set categoryQuery (fieldname:value)
     			"", // set property group (fieldname,min,max, groupcount)
-    			"ALIAS,Authority1,Authority2", // use check prefix query filed
+    			"ALIAS,Authority1,Authoritytype,Postauth1,Postauth2", // use check prefix query filed
     			"DATE", // set use check fast access field
     			"", // set multigroupby field
     			"", // set auth query (Auth Target Field, Auth Collection, Auth Reference Field, Authority Query)
@@ -100,7 +100,7 @@ public class WNCollection {
     			"RANK/DESC,DATE/DESC",  // set sort field (field,order) multi sort '/'
     			"basic,rpfmo,100",  // set sort field (field,order) multi sort '/'
     			"SUBJECT,BODY,CreatorName",// set search field
-    			"DOCID,FD_ID,FolderName,FolderPath,SUBJECT,BODY/200,ExpiredDate,DATE,CreatorName,CreatorDept,Authority1,Authority2,AttachName,AttachName2,AttachName3,AttachName4,ATTACH,ATTACH2,ATTACH3,ATTACH4,ALIAS",// set document field
+    			"DOCID,FD_ID,FolderName,FolderPath,SUBJECT,BODY,ExpiredDate,DATE,CreatorName,CreatorDept,Authority1,Authority2,AttachName,AttachName2,AttachName3,AttachName4,ATTACH,ATTACH2,ATTACH3,ATTACH4,ALIAS",// set document field
     			"", // set date range
     			"", // set rank range
     			"", // set prefix query, example: <fieldname:contains:value1>|<fieldname:contains:value2>/1,  (fieldname:contains:value) and ' ', or '|', not '!' / operator (AND:1, OR:0)
@@ -119,7 +119,35 @@ public class WNCollection {
     			"", // set auth query (Auth Target Field, Auth Collection, Auth Reference Field, Authority Query)
     			"", // set Duplicate Detection Criterion Field, RANK/DESC,DATE/DESC
     			"standard" // collection display name
-    			}
+    			},
+    			{
+        			"technology", // set index name
+        			"app", // set collection name
+        			"0,3",  // set pageinfo (start,count)
+        			"1,0,0,0,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
+        			"RANK/DESC,DATE/DESC",  // set sort field (field,order) multi sort '/'
+        			"basic,rpfmo,100",  // set sort field (field,order) multi sort '/'
+        			"BODY,SUBJECT,ATTACHNAME,ATTACH,CreatorName",// set search field
+        			"DOCID,FORM_INST_ID,FORM_PREFIX,FORM_NAME,BODY/200,SUBJECT,DOC_NO,INITIATOR_ID,INITIATOR_NAME,INITIATOR_OU_ID,CreatorName,INITIATED_DATE,DATE,APPROVAL_CCINFO,TechnologyDOC,ATTACH,ATTACHNAME,AUTHORITY,TYPE,ALIAS",// set document field
+        			"", // set date range
+        			"", // set rank range
+        			"", // set prefix query, example: <fieldname:contains:value1>|<fieldname:contains:value2>/1,  (fieldname:contains:value) and ' ', or '|', not '!' / operator (AND:1, OR:0)
+        			"", // set collection query (<fieldname:contains:value^weight | value^weight>/option...) and ' ', or '|'
+        			"", // set boost query (<fieldname:contains:value> | <field3:contains:value>...) and ' ', or '|'
+        			"", // set filter operation (<fieldname:operator:value>)
+        			"", // set groupby field(field, count)
+        			"", // set sort field group(field/order,field/order,...)
+        			"", // set categoryBoost(fieldname,matchType,boostID,boostKeyword)
+        			"", // set categoryGroupBy (fieldname:value)
+        			"", // set categoryQuery (fieldname:value)
+        			"", // set property group (fieldname,min,max, groupcount)
+        			"ALIAS,AUTHORITY,TechnologyDOC", // use check prefix query filed
+        			"DATE", // set use check fast access field
+        			"", // set multigroupby field
+        			"", // set auth query (Auth Target Field, Auth Collection, Auth Reference Field, Authority Query)
+        			"", // set Duplicate Detection Criterion Field, RANK/DESC,DATE/DESC
+        			"technology" // collection display name
+        			}
              ,
     			{
     			"mrb", // set index name

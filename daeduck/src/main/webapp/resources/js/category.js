@@ -1,26 +1,19 @@
 
 
 
-function catecate(collection){
+function catecate(collection,query){
 	$(document).ready(function(){
 		$.ajax({
 			url : '/category',
 			type : 'GET',
 			datatype : 'html',
 			data : {
-				"collection" : collection
+				"collection" : collection,
+				"query" : query
 				//"depth" : click
 			},
 			success : function(data) {
 				console.log(data);
-				var result = data.name + ' ' + '(' + data.count + ')';
-				if (Object.keys(data).length === 0) {
-					return;
-				} else {
-					$('#category').html(result);
-					//window.location.href=window.location.href+'?cateQuery='+result;
-				}
-	
 			},
 			error : function(error) {
 				console.log(error);
@@ -28,6 +21,8 @@ function catecate(collection){
 		})
 	});
 }
+
+
 
 function getCollectionQuality(){
 	$('#quality').css('display','block');

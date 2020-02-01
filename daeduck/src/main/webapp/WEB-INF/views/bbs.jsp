@@ -23,11 +23,16 @@
 	
 	<div class="main">
 		<c:forEach var="entry" items="${bbs }">
-			<div>SUBJECCT: ${entry.SUBJECCT }</div>
+			<c:if test="${!empty entry}">
+			<div>SUBJECT: ${entry.SUBJECT }</div>
 			<div>BODY: ${entry.BODY }</div>
 			<div>CreatorName: ${entry.CreatorName }</div>
 			<div>FolderPath: ${entry.FolderPath }</div>
+			<div>Authority1: ${entry.Authority1 }</div>
+			
+			<div>DATE: ${entry.DATE }</div>
 			<hr>
+			</c:if>
 		</c:forEach>
 		<div>검색 건수: ${count}/${totalCount }</div>
 		${paging}
@@ -35,7 +40,14 @@
 	</body>
 	<script>
 		$(document).ready(function(){
-			
+			var query;
+			if('${value.query}' != ''){
+				query = '${value.query}';
+			}
+			else{
+				query = '';
+			}
+			console.log("쿼리 값!! : "+query);
 
 			$.ajax({
 			url : '/category',
@@ -43,28 +55,10 @@
 			datatype : 'html',
 			data : {
 				"collection" : 'bbs'
-				//"depth" : click
 			},
 			success : function(data) {
 				console.log(data);
 				$('#bbscategory').css('display','block');
-
-
-				// var obj = null;
-				// var list = new Array();
-				// for(var i=0;i<data.dep3.length;i++){
-				// 	var dep2 = data.dep3[i].cateName3.split('>')[0];
-				// 	for(var j=i;j<data.dep3.length;j++){
-				// 		var dep3 = data.dep3[j].cateName3.split('>')[0];
-				// 		if(dep2 == dep3){
-				// 			obj = new Object();
-				// 			console.log(data.dep3[j].cateName3.split('>')[1]);
-				// 			obj.key = i;
-				// 			obj.value=data.dep3[j].cateName3.split('>')[1];
-				// 			list.push(obj);
-				//         }
-				//     }
-				// }
 
 				Handlebars.registerHelper('level',function(parent,target,options){
 					if(parent == target)
@@ -108,22 +102,26 @@
 	</script>
 
 	<script id="entry-template" type="text/x-handlebars-template">
+		{{#dep1}}
 		<li>
-			{{dep1.0.cateName}} 
-			{{#dep2}}
+			{{cateName}}
+			{{#each ../dep2}}
+			{{#level ../cateName parent}}
 			<ul> 
 				<li>
-					<a href="#" onClick="javascript:cateQuery('{{../dep1.0.cateName}}','{{cateName1}}')">{{cateName1}}</a>       
-					{{#each ../dep3}}
-						{{#level ../cateName1 parent}}
+					<a href="#" onClick="javascript:cateQuery('{{../cateName}}','{{cateName1}}')">{{cateName1}}({{count1}})</a>       
+					{{#each ../../dep3}}
+						{{#level ../cateName1 parent}}  
 						<ul>
-							<li><a href="#" onClick="javascript:cateQuery2('{{../../dep1.0.cateName}}','{{../cateName1}}','{{cateName3}}')">{{cateName3}}</a></li>
+							<li><a href="#" onClick="javascript:cateQuery2('{{../../cateName}}','{{../cateName1}}','{{cateName3}}')">{{cateName3}}({{count3}})</a></li>
 						</ul>
 						{{/level}}
 					{{/each}}
 				</li>   
 			</ul>
-			{{/dep2}}
+			{{/level}}
+			{{/each}}
 		</li>
+		{{/dep1}}
 	</script>
 </html>

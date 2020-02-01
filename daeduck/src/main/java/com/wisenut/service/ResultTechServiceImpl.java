@@ -12,8 +12,8 @@ import com.wisenut.common.WNDefine;
 import com.wisenut.common.WNSearchInfo;
 
 @Service
-@Order(1)
-public class ResultAppServiceImpl extends ResultAbstractService implements ResultService {
+@Order(4)
+public class ResultTechServiceImpl extends ResultAbstractService implements ResultService {
 
 	@Override
 	public List<Map<String, Object>> getViewResult(WNSearchInfo wnSearch, String colName) {
@@ -42,6 +42,7 @@ public class ResultAppServiceImpl extends ResultAbstractService implements Resul
 						result.put(value, wnSearch.getField(colName, value, i, false));
 					}
 				}
+				result.remove("TYPE"); //TYPE 결과 제거
 				list.add(result);
 			}
 

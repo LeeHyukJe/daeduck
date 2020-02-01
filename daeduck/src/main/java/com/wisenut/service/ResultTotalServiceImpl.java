@@ -41,10 +41,10 @@ public class ResultTotalServiceImpl implements ResultManagement {
 				}
 
 				list.add(result);
-
 			}
 
 		}
+		
 		return list;
 	}
 

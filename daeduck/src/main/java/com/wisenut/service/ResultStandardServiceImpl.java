@@ -5,12 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import com.wisenut.common.WNDefine;
 import com.wisenut.common.WNSearchInfo;
 
 @Service
+@Order(3)
 public class ResultStandardServiceImpl extends ResultAbstractService implements ResultService {
 
 	@Override

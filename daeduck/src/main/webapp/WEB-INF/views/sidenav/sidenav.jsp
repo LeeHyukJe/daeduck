@@ -7,7 +7,9 @@
 	<div>카테고리</div>
 	<hr>
 
-	<div><a href="/searchAll">통합검색</a></div>
+	<div>
+		<a href="#" onClick="javascript:doSearch('ALL')">통합검색</a>
+	</div>
 	<div id="app">
 		<a href="#" onClick="javascript:doSearch('app')">전자결재</a>
 	</div>
@@ -82,21 +84,30 @@
 	</c:if>
 	-->
 	<div>
-		<a href="#" onClick="javascript:doSearch('tech')">기술문서</a>
+		<a href="#" onClick="javascript:doSearch('technology')">기술문서</a>
 	</div>
 	<div>
 		<a href="#" onclick="javascript:getCollectionQuality()">품질관리</a>
-		<ul id="quality" style="display:none;">
-			<li><a href='#' onClick='javascript:doQualitySearch("0")'>DRM/MRB(PKG/MLB)</a></li>
-			<li><a href='#' onClick='javascript:doQualitySearch("1")'>PPAP승인(PKG/MLB)</a></li>
-			<li><a href='#' onClick='javascript:doQualitySearch("2")'>ECM 계획서(PKG/MBL)</a></li>
-			<li><a href='#' onClick='javascript:doQualitySearch("3")'>시정조치요구(PKG/MBL)</a></li>
-			<li><a href='#' onClick='javascript:doQualitySearch("4")'>OCAP(PKG/MBL)</a></li>
-			<li><a href='#' onClick='javascript:doQualitySearch("5")'>분석요구서(PKG/MBL)</a></li>
-			<li><a href='#' onClick='javascript:doQualitySearch("6")'>검사표준서</a></li>
-			<li><a href='#' onClick='javascript:doQualitySearch("7")'>DRB/MRB</a></li>
-			<li><a href='#' onClick='javascript:doQualitySearch("8")'>FT/IR 라이브러리</a></li>
-			<li><a href='#' onClick='javascript:doQualitySearch("9")'>원자재승인</a></li>
+		<c:choose>
+			<c:when test="${! empty colflag}">
+				<ul id="quality" style="display:block;">
+			</c:when>
+
+			<c:otherwise>
+                <ul id="quality" style="display:none;">
+            </c:otherwise>
+		</c:choose>		
+			<li><a href='#' onClick='javascript:doQualitySearch("0","mrb")'>DRM/MRB(PKG/MLB)</a></li>
+			<li><a href='#' onClick='javascript:doQualitySearch("1","ppap")'>PPAP승인(PKG/MLB)</a></li>
+			<li><a href='#' onClick='javascript:doQualitySearch("2","ecn")'>ECM 계획서(PKG/MBL)</a></li>
+			<li><a href='#' onClick='javascript:doQualitySearch("3","change")'>시정조치요구(PKG/MBL)</a></li>
+			<li><a href='#' onClick='javascript:doQualitySearch("4","ocap")'>OCAP(PKG/MBL)</a></li>
+			<li><a href='#' onClick='javascript:doQualitySearch("5","analysis")'>분석요구서(PKG/MBL)</a></li>
+			<li><a href='#' onClick='javascript:doQualitySearch("6","")'>검사표준서</a></li>
+			<li><a href='#' onClick='javascript:doQualitySearch("7","")'>DRB/MRB</a></li>
+			<li><a href='#' onClick='javascript:doQualitySearch("8","library1")'>FT/IR 라이브러리-1</a></li>
+			<li><a href='#' onClick='javascript:doQualitySearch("9","library2")'>FT/IR 라이브러리-2</a></li>
+			<li><a href='#' onClick='javascript:doQualitySearch("10","raw")'>원자재승인</a></li>
 		</ul>
 	</div>
 

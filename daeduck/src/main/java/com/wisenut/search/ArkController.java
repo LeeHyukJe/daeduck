@@ -13,21 +13,24 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wisenut.common.WNCollection;
 
+import lombok.extern.java.Log;
+
 @RestController
+@Log
 public class ArkController {
 	
 	// 자동완성
 	
 	
-	@RequestMapping(value="/ark", method= {RequestMethod.GET}, produces = "text/plain; charset=utf8")
-	public ResponseEntity<String> Ark(@RequestParam Map<String,String> params, HttpServletResponse response) {
+	@RequestMapping(value="/ark", method= {RequestMethod.GET,RequestMethod.POST}, produces = "text/plain; charset=utf8")
+	public ResponseEntity<String> Ark(@RequestBody Map<String,String> params, HttpServletResponse response) {
 		
 		int timeout = 500;	// 1000분의 500초 : 0.5초이내에 응답이 없는 경우 연결 종료
 		String query = params.get("query");
@@ -38,6 +41,7 @@ public class ArkController {
 		//System.out.println("--> Query:" + query + "/ datatype:" + datatype);
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		
+		log.info("자동완성 파라미터 : "+params);
 		try {
 			query = URLEncoder.encode(query, "UTF-8");
 			String url = "http://" + WNCollection.MANAGER_IP + ":" + WNCollection.MANAGER_PORT + "/manager/WNRun.do";

@@ -23,7 +23,7 @@ import com.wisenut.common.WNCollection;
 public class PopWordController {
 
 	// 인기검색어
-	@RequestMapping(value = "/popword", method= {RequestMethod.GET }, produces = "text/plain; charset=utf8")
+	@RequestMapping(value = "/popword", method= {RequestMethod.GET }, produces="application/json;charset=UTF-8")
 	public ResponseEntity<String> popword(@RequestParam Map<String, String> params, HttpServletResponse response) {
 		/**
 		 * subject: 인기검색어 가져오는 페이지

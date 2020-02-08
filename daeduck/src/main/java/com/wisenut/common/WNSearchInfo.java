@@ -2171,9 +2171,9 @@ public class WNSearchInfo {
         WNAnchor wnanchor = getPageAnchor(startCount, totalCount, viewListCount, bundleCount);
 
         if (wnanchor.getFirstPage() != -1) {
-            sbRet.append("<a class=\"pre\" href=\"#none\" onClick=\"javascript:doPaging('" + wnanchor.getBundleBefore() + "');\" title=\"Previous Page\">&lt;&lt;</a>");
+            sbRet.append("<a class=\"num\" href=\"#none\" onClick=\"javascript:doPaging('" + wnanchor.getBundleBefore() + "');\" title=\"Previous Page\">&lt;&lt;</a>");
         } else {
-            sbRet.append("<a class=\"pre\" href=\"#none\" title=\"Previous Page\">&lt;&lt;</a>");
+            sbRet.append("<a class=\"num\" href=\"#none\" title=\"Previous Page\">&lt;&lt;</a>");
         }
 
         int pageCount = wnanchor.getPageCount();
@@ -2181,16 +2181,16 @@ public class WNSearchInfo {
 
         for (int i = 0; i < pageCount && i < pages.length; i++) {
             if (pages[i][1].equals("-1")) {
-                sbRet.append("<strong>" + pages[i][0] + "</strong>");
+                sbRet.append("<a class=\"num click\" >" + pages[i][0] + "</a>");
             } else {
-                sbRet.append("<a href=\"#none\" onClick=\"javascript:doPaging('" + pages[i][1] + "');\" title=\"Paging\"> " + pages[i][0] + " </a>");
+                sbRet.append("<a class=\"num\" href=\"#none\" onClick=\"javascript:doPaging('" + pages[i][1] + "');\" title=\"Paging\"> " + pages[i][0] + " </a>");
             }
         }
 
         if (wnanchor.getBundleNext() != -1) {
-            sbRet.append("<a class=\"next\" href=\"#none\" onClick=\"javascript:doPaging('" + wnanchor.getBundleNext() + "')\" title=\"Next Page\">&gt;&gt;</a>");
+            sbRet.append("<a class=\"num\" href=\"#none\" onClick=\"javascript:doPaging('" + wnanchor.getBundleNext() + "')\" title=\"Next Page\">&gt;&gt;</a>");
         } else {
-            sbRet.append("<a class=\"next\" href=\"#none\" title=\"Next Page\">&gt;&gt;</a>");
+            sbRet.append("<a class=\"num\" href=\"#none\" title=\"Next Page\">&gt;&gt;</a>");
         }
 
         return sbRet.toString();

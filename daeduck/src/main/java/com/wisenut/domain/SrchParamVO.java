@@ -27,6 +27,7 @@ public class SrchParamVO {
 	private String paging;
 	private int listCount;
 	private String colflag;
+	private String target; // 카테고리 타켓 필드
 	
 	// 전자결재 권한 체크 파라미터
 	private String authority; // 사번
@@ -65,6 +66,7 @@ public class SrchParamVO {
 		this.authorityex = "";
 		this.authoritydept = "";
 		this.colflag = "";
+		this.target = "";
 	}
 	
 	public String getCurrentDate() {

@@ -10,7 +10,17 @@ import lombok.extern.java.Log;
 @ToString
 @Log
 public class QualityMrbDTO {
-	private String factory_id;
+	private String biz_place;
 	private String factory_gubun;
 	private String role_out;
+	private String col_time_start;
+	private String col_time_end;
+	
+	public QualityMrbDTO() {
+		this.biz_place = "";
+		this.factory_gubun = "";
+		this.role_out = "";
+		this.col_time_start = "";
+		this.col_time_end = "";
+	}
 }

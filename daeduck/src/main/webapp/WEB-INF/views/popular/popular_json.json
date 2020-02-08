@@ -1,0 +1,23 @@
+{
+    "Data": {
+        "MakeTime": "2020-02-03 00:00:03",
+        "Query": [{
+            "content": "안산",
+            "id": 1,
+            "querycount": 63,
+            "count": -1,
+            "updown": "N"
+        }, {
+            "content": "대덕",
+            "id": 2,
+            "querycount": 8,
+            "count": 1,
+            "updown": "D"
+        }],
+        "Type": {
+            "content": "주간",
+            "id": "W"
+        },
+        "Label": "_ALL_"
+    }
+}

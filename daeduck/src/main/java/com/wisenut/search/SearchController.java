@@ -17,6 +17,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wisenut.common.WNCollection;
 import com.wisenut.common.WNSearchInfo;
+import com.wisenut.domain.QualityAnalysisDTO;
+import com.wisenut.domain.QualityChangeDTO;
+import com.wisenut.domain.QualityEcnDTO;
+import com.wisenut.domain.QualityLibrary1DTO;
+import com.wisenut.domain.QualityLibrary2DTO;
+import com.wisenut.domain.QualityMrbDTO;
+import com.wisenut.domain.QualityOcapDTO;
+import com.wisenut.domain.QualityPpapDTO;
+import com.wisenut.domain.QualityRawDTO;
 import com.wisenut.domain.SrchParamVO;
 import com.wisenut.service.ResultManagement;
 import com.wisenut.service.ResultService;
@@ -70,8 +79,9 @@ public class SearchController {
 			// log.info("통합결과: " + totalResult.toString());
 
 			// 1레벨 카테고리
-			cateStandardName = commonCategory(searchInfo, "standard", "FolderPath", depth);
-			cateBbsName = commonCategory(searchInfo, "bbs", "FolderPath", depth);
+			// cateStandardName = commonCategory(searchInfo, "standard", "FolderPath",
+			// depth);
+			// cateBbsName = commonCategory(searchInfo, "bbs", "FolderPath", depth);
 
 			// log.info("카테고리 결과: "+cateStandardName);
 			// log.info("카테고리 결과2 : "+cateBbsName);
@@ -80,10 +90,10 @@ public class SearchController {
 			model.addAttribute("value", value);
 
 			model.addAttribute("totalQuality", totalQualityResult); // 품질관리 통합검색
-			model.addAttribute("Appcount", searchInfo.getResultTotalCount("app")); // app 검색결과 건수
-			model.addAttribute("Bbscount", searchInfo.getResultTotalCount("bbs")); // bbs 검색 결과 건수
-			model.addAttribute("standardcount", searchInfo.getResultTotalCount("standard")); // standard 검색 결과 건수
-			model.addAttribute("Technologycount", searchInfo.getResultTotalCount("technology")); // technology 검색결과 건수
+			model.addAttribute("APPcount", searchInfo.getResultTotalCount("app")); // app 검색결과 건수
+			model.addAttribute("BBScount", searchInfo.getResultTotalCount("bbs")); // bbs 검색 결과 건수
+			model.addAttribute("STANDARDcount", searchInfo.getResultTotalCount("standard")); // standard 검색 결과 건수
+			model.addAttribute("TECHNOLOGYcount", searchInfo.getResultTotalCount("technology")); // technology 검색결과 건수
 
 			model.addAttribute("cateStandardName", cateStandardName);
 			model.addAttribute("cateBbsName", cateBbsName);
@@ -111,6 +121,7 @@ public class SearchController {
 		WNSearchInfo searchInfo = null;
 		List<Map<String, Object>> list = null;
 		String paging = "";
+		int collectionByCount;
 		try {
 			searchInfo = searchService.setting(value);
 
@@ -122,10 +133,13 @@ public class SearchController {
 			}
 			// log.info("결과 " + list);
 
+			// 컬렉션 별 카운트 얻기
+			collectionByCount = searchInfo.getResultTotalCount(value.getCollection());
+
 			log.info(value.getCollection() + " view 이동");
 			model.addAttribute("value", value);
 			model.addAttribute(value.getCollection(), list);
-			model.addAttribute("totalCount", searchInfo.getResultTotalCount(value.getCollection()));
+			model.addAttribute(value.getCollection().toUpperCase() + "count", collectionByCount);
 			model.addAttribute("count", searchInfo.getResultCount(value.getCollection()) + value.getStartCount());
 
 			if (searchInfo.getResultTotalCount(value.getCollection()) > searchInfo
@@ -133,6 +147,7 @@ public class SearchController {
 				paging = searchInfo.getPageLinks(value.getStartCount(),
 						searchInfo.getResultTotalCount(value.getCollection()), 10, 10);
 			}
+
 			model.addAttribute("paging", paging);
 
 			return value.getCollection();
@@ -150,29 +165,36 @@ public class SearchController {
 
 		try {
 			searchInfo = searchService.setting(value);
-			int depth1GroupCount = searchInfo.getCategoryCount(value.getCollection(), "FolderPath", 1);
+			int depth1GroupCount = searchInfo.getCategoryCount(value.getCollection(), value.getTarget(), 1);
 			String cateName = null;
 			Map<String, List<Map<String, String>>> cateResultMap = new HashMap<>();
 			int catedepthCount = 0;
 			int catedepth2Count = 0;
 			int catedepth3Count = 0;
+			int catedepth4Count = 0;
 			List<Map<String, String>> list1 = new ArrayList<>();
 			List<Map<String, String>> list2 = new ArrayList<>();
 			List<Map<String, String>> list3 = new ArrayList<>();
+			List<Map<String, String>> list4 = new ArrayList<>();
+			String parent = "", parent2 = "", parent3 = "";
 			for (int i = 0; i < depth1GroupCount; i++) {
 				Map<String, String> map = new HashMap<>();
-				cateName = searchInfo.getCategoryName(value.getCollection(), "FolderPath", 1, i);
-				catedepthCount = searchInfo.getDocumentCountInCategory(value.getCollection(), "FolderPath", 1, i);
+				cateName = searchInfo.getCategoryName(value.getCollection(), value.getTarget(), 1, i);
+				catedepthCount = searchInfo.getDocumentCountInCategory(value.getCollection(), value.getTarget(), 1, i);
+				if (cateName.equals("null"))
+					continue;
 				map.put("cateName", cateName);
 				map.put("count", catedepthCount + "");
-
+				parent = cateName;
 				list1.add(map);
 
-				catedepth2Count = searchInfo.getCategoryCount(value.getCollection(), "FolderPath", 2);
+				catedepth2Count = searchInfo.getCategoryCount(value.getCollection(), value.getTarget(), 2);
 				for (int j = 0; j < catedepth2Count; j++) {
 					Map<String, String> map2 = new HashMap<>();
-					String cate2Name = searchInfo.getCategoryName(value.getCollection(), "FolderPath", 2, j);
-					int cate2Count = searchInfo.getDocumentCountInCategory(value.getCollection(), "FolderPath", 2, j);
+					String cate2Name = searchInfo.getCategoryName(value.getCollection(), value.getTarget(), 2, j);
+
+					int cate2Count = searchInfo.getDocumentCountInCategory(value.getCollection(), value.getTarget(), 2,
+							j);
 //					if (cateName.equals(cate2Name.split(">")[0]) && i == 0) { // 첫번째 뎁스 중 에서 첫번째 카테고리와 같을 경우
 //						map2.put("cateName1", cate2Name.substring(cate2Name.indexOf(">") + 1, cate2Name.length()));
 //						map2.put("count1", cate2Count + "");
@@ -191,32 +213,62 @@ public class SearchController {
 						map2.put("count1", cate2Count + "");
 						map2.put("parent", cate2Name.split(">")[0]);
 
+						parent2 = cate2Name;
 						list2.add(map2);
-					}
 
-					catedepth3Count = searchInfo.getCategoryCount(value.getCollection(), "FolderPath", 3);
-					for (int k = 0; k < catedepth3Count; k++) {
-						Map<String, String> map3 = new HashMap<>();
-						String cate3Name = searchInfo.getCategoryName(value.getCollection(), "FolderPath", 3, k);
-						int cate3Count = searchInfo.getDocumentCountInCategory(value.getCollection(), "FolderPath", 3,
-								k);
+						catedepth3Count = searchInfo.getCategoryCount(value.getCollection(), value.getTarget(), 3);
+						for (int k = 0; k < catedepth3Count; k++) {
+							Map<String, String> map3 = new HashMap<>();
+							String cate3Name = searchInfo.getCategoryName(value.getCollection(), value.getTarget(), 3,
+									k);
 
-						/**
-						 * if(cate2Name.split(">")[1].equals(cate3Name.split(">")[1]) &&
-						 * dept3flag++<=j){ map3.put("cateName"+j, cate3Name.split(">")[2]);
-						 * map3.put("count"+j, cate3Count+""); map3.put("parent",
-						 * cate2Name.split(">")[1]); list3.add(map3); }
-						 **/
+							int cate3Count = searchInfo.getDocumentCountInCategory(value.getCollection(),
+									value.getTarget(), 3, k);
 
-						if (cate2Name.split(">")[1].equals(cate3Name.split(">")[1])) {
-							map3.put("cateName3", cate3Name.split(">")[2]);
-							map3.put("count3", cate3Count + "");
-							map3.put("parent", cate2Name.split(">")[1]);
+							/**
+							 * if(cate2Name.split(">")[1].equals(cate3Name.split(">")[1]) &&
+							 * dept3flag++<=j){ map3.put("cateName"+j, cate3Name.split(">")[2]);
+							 * map3.put("count"+j, cate3Count+""); map3.put("parent",
+							 * cate2Name.split(">")[1]); list3.add(map3); }
+							 **/
 
-							list3.add(map3);
+							if (cateName.equals(cate3Name.split(">")[0])
+									&& cate2Name.split(">")[1].equals(cate3Name.split(">")[1])) {
+								map3.put("cateName3", cate3Name.split(">")[2]);
+								map3.put("count3", cate3Count + "");
+								map3.put("parent", cate2Name.split(">")[1]);
+								map3.put("parent2", cateName);
+
+								parent3 = cate3Name;
+								list3.add(map3);
+
+								catedepth4Count = searchInfo.getCategoryCount(value.getCollection(), value.getTarget(),
+										4);
+								for (int l = 0; l < catedepth4Count; l++) {
+									Map<String, String> map4 = new HashMap<>();
+									String cate4Name = searchInfo.getCategoryName(value.getCollection(),
+											value.getTarget(), 4, l);
+									int cate4Count = searchInfo.getDocumentCountInCategory(value.getCollection(),
+											value.getTarget(), 4, l);
+
+									if (cateName.equals(cate4Name.split(">")[0])
+											&& cate2Name.split(">")[1].equals(cate4Name.split(">")[1])
+											&& cate3Name.split(">")[2].equals(cate4Name.split(">")[2])) {
+
+										map4.put("cateName4", cate4Name.split(">")[3]);
+										map4.put("count4", cate4Count + "");
+										map4.put("parent", cate3Name.split(">")[2]);
+										map4.put("parent2", cate2Name.split(">")[1]);
+										map4.put("parent3", cateName);
+
+										list4.add(map4);
+									}
+								}
+								cateResultMap.put("dep4", list4);
+							}
 						}
+						cateResultMap.put("dep3", list3);
 					}
-					cateResultMap.put("dep3", list3);
 				}
 				cateResultMap.put("dep2", list2);
 			}
@@ -230,30 +282,65 @@ public class SearchController {
 	}
 
 	@RequestMapping(value = "/colquality", method = { RequestMethod.GET, RequestMethod.POST })
-	public String collectionQuality(@ModelAttribute SrchParamVO value, Model model, @RequestParam String colflag) {
+	public String collectionQuality(@ModelAttribute SrchParamVO value, Model model, @RequestParam String colflag,
+			@ModelAttribute QualityAnalysisDTO analysisDTO, @ModelAttribute QualityChangeDTO changeDTO,
+			@ModelAttribute QualityEcnDTO ecnDTO, @ModelAttribute QualityLibrary1DTO library1DTO,
+			@ModelAttribute QualityLibrary2DTO library2DTO, @ModelAttribute QualityMrbDTO mrbDTO,
+			@ModelAttribute QualityOcapDTO ocapDTO, @ModelAttribute QualityPpapDTO ppapDTO,
+			@ModelAttribute QualityRawDTO rawDTO) {
 		WNSearchInfo searchInfo = null;
 		Map<String, List<Map<String, Object>>> totalQualityResult = new HashMap<>();
 		log.info("품질관리 파라미터 " + value);
 		String paging = "";
 		try {
 			int collTarget = 0;
-			searchInfo = searchService.setting(value);
+
+			switch (colflag) {
+			case "0":
+				searchInfo = searchService.settingbyQuality(value, mrbDTO);
+				break;
+			case "1":
+				searchInfo = searchService.settingbyQuality(value, ppapDTO);
+				break;
+			case "2":
+				searchInfo = searchService.settingbyQuality(value, ecnDTO);
+				break;
+			case "3":
+				searchInfo = searchService.settingbyQuality(value, changeDTO);
+				break;
+			case "4":
+				searchInfo = searchService.settingbyQuality(value, ocapDTO);
+				break;
+			case "5":
+				searchInfo = searchService.settingbyQuality(value, analysisDTO);
+				break;
+			case "6":
+				searchInfo = searchService.settingbyQuality(value, library1DTO);
+				break;
+			case "7":
+				searchInfo = searchService.settingbyQuality(value, library2DTO);
+				break;
+			case "8":
+				searchInfo = searchService.settingbyQuality(value, rawDTO);
+				break;
+			default:
+				searchInfo = searchService.setting(value);
+				break;
+			}
+			// searchInfo = searchService.settingbyQuality(value,ppapDTO);
 			// 품질관리 통합검색 출력
 			for (int index = 0; index < WNCollection.COLLECTIONS.length; index++) {
 				if (WNCollection.COLLECTIONS[index].equals(value.getCollection()))
 					collTarget = index;
 			}
-//			for(int i = 3; i < WNCollection.COLLECTIONS.length; i++) {
-//				totalQualityResult.put(WNCollection.COLLECTIONS[i].toUpperCase(),
-//						resultManageService.getViewResult(searchInfo, WNCollection.COLLECTIONS[i]));
-//			}
 			totalQualityResult.put(WNCollection.COLLECTIONS[collTarget].toUpperCase(),
 					resultManageService.getViewResult(searchInfo, WNCollection.COLLECTIONS[collTarget]));
 
 			log.info("품질관리 별 검색하기 " + totalQualityResult);
 			log.info("품질관리 플래그 " + colflag);
 
-			model.addAttribute("totalCount", searchInfo.getResultTotalCount(value.getCollection()));
+			model.addAttribute(value.getCollection().toUpperCase() + "count",
+					searchInfo.getResultTotalCount(value.getCollection()));
 			model.addAttribute("count", searchInfo.getResultCount(value.getCollection()) + value.getStartCount());
 
 			if (searchInfo.getResultTotalCount(value.getCollection()) > searchInfo
@@ -268,7 +355,7 @@ public class SearchController {
 			model.addAttribute("paging", paging);
 			return "quality";
 		} catch (Exception e) {
-
+			e.printStackTrace();
 			return "home";
 		}
 	}

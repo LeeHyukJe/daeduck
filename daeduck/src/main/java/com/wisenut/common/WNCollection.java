@@ -3,9 +3,13 @@ package com.wisenut.common;
 public class WNCollection {
 
     public static String SEARCH_IP = "192.168.8.36";
+//	public static String SEARCH_IP = "192.168.7.144";
+//    public static String SEARCH_IP = "127.0.0.1";
     public static int SEARCH_PORT = 7000;
 
     public static String MANAGER_IP = "192.168.8.36";
+//    public static String MANAGER_IP = "192.168.7.144";
+//    public static String MANAGER_IP = "127.0.0.1";
     public static int MANAGER_PORT = 7800;
 
     public static String[] COLLECTIONS = new String[]{"app","bbs","standard","technology","mrb","ppap","ecn","change","ocap","analysis","library1","library2","raw"};
@@ -38,11 +42,11 @@ public class WNCollection {
     			"app", // set index name
     			"app", // set collection name
     			"0,3",  // set pageinfo (start,count)
-    			"1,0,0,0,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
+    			"1,1,1,1,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
     			"RANK/DESC,DATE/DESC",  // set sort field (field,order) multi sort '/'
     			"basic,rpfmo,100",  // set sort field (field,order) multi sort '/'
-    			"BODY,SUBJECT,ATTACHNAME,ATTACH,CreatorName",// set search field
-    			"DOCID,FORM_INST_ID,FORM_PREFIX,FORM_NAME,BODY/200,SUBJECT,DOC_NO,INITIATOR_ID,INITIATOR_NAME,INITIATOR_OU_ID,CreatorName,INITIATED_DATE,DATE,APPROVAL_CCINFO,TechnologyDOC,ATTACH,ATTACHNAME,AUTHORITY,TYPE,ALIAS",// set document field
+    			"BODY,SUBJECT,ATTACHNAME,ATTACH,CreatorName,FORM_NAME,DOC_NO,FOLDER_NAME,INITIATOR_NAME",// set search field
+    			"DOCID,FORM_INST_ID,FORM_PREFIX,FORM_NAME,BODY/200,SUBJECT,DOC_NO,INITIATOR_ID,INITIATOR_NAME,INITIATOR_OU_ID,CreatorName,INITIATED_DATE,DATE,APPROVAL_CCINFO,TechnologyDOC,ATTACH,ATTACHNAME,AUTHORITY,TYPE,FOLDER_NAME,ALIAS",// set document field
     			"", // set date range
     			"", // set rank range
     			"", // set prefix query, example: <fieldname:contains:value1>|<fieldname:contains:value2>/1,  (fieldname:contains:value) and ' ', or '|', not '!' / operator (AND:1, OR:0)
@@ -67,10 +71,10 @@ public class WNCollection {
     			"bbs", // set index name
     			"bbs", // set collection name
     			"0,3",  // set pageinfo (start,count)
-    			"1,0,0,0,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
+    			"1,1,1,1,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
     			"RANK/DESC,DATE/DESC",  // set sort field (field,order) multi sort '/'
     			"basic,rpfmo,100",  // set sort field (field,order) multi sort '/'
-    			"SUBJECT,BODY,CreatorName",// set search field
+    			"SUBJECT,BODY,CreatorName,FolderName,CreatorDept",// set search field
     			"DOCID,FD_ID,FolderName,FolderPath,SUBJECT,BODY,ExpiredDate,DATE,CreatorName,CreatorDept,ATTACHNAME,ATTACH,Authority1,ALIAS",// set document field
     			"", // set date range
     			"", // set rank range
@@ -96,11 +100,11 @@ public class WNCollection {
     			"standard", // set index name
     			"standard", // set collection name
     			"0,3",  // set pageinfo (start,count)
-    			"1,0,0,0,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
+    			"1,1,1,1,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
     			"RANK/DESC,DATE/DESC",  // set sort field (field,order) multi sort '/'
     			"basic,rpfmo,100",  // set sort field (field,order) multi sort '/'
-    			"SUBJECT,BODY,CreatorName",// set search field
-    			"DOCID,FD_ID,FolderName,FolderPath,SUBJECT,BODY,ExpiredDate,DATE,CreatorName,CreatorDept,Authority1,Authority2,AttachName,AttachName2,AttachName3,AttachName4,ATTACH,ATTACH2,ATTACH3,ATTACH4,ALIAS",// set document field
+    			"SUBJECT,BODY,FolderName,CreatorName,CreatorDept",// set search field
+    			"DOCID,FD_ID,FolderName,FolderPath,SUBJECT,BODY/200,ExpiredDate,DATE,CreatorName,CreatorDept,AttachName,AttachName2,AttachName3,AttachName4,ATTACH,ATTACH2,ATTACH3,ATTACH4,Authority1,ALIAS",// set document field
     			"", // set date range
     			"", // set rank range
     			"", // set prefix query, example: <fieldname:contains:value1>|<fieldname:contains:value2>/1,  (fieldname:contains:value) and ' ', or '|', not '!' / operator (AND:1, OR:0)
@@ -124,7 +128,7 @@ public class WNCollection {
         			"technology", // set index name
         			"app", // set collection name
         			"0,3",  // set pageinfo (start,count)
-        			"1,0,0,0,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
+        			"1,1,1,1,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
         			"RANK/DESC,DATE/DESC",  // set sort field (field,order) multi sort '/'
         			"basic,rpfmo,100",  // set sort field (field,order) multi sort '/'
         			"BODY,SUBJECT,ATTACHNAME,ATTACH,CreatorName",// set search field
@@ -153,7 +157,7 @@ public class WNCollection {
     			"mrb", // set index name
     			"mrb", // set collection name
     			"0,3",  // set pageinfo (start,count)
-    			"1,0,0,0,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
+    			"1,1,1,1,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
     			"RANK/DESC,DATE/DESC",  // set sort field (field,order) multi sort '/'
     			"basic,rpfmo,100",  // set sort field (field,order) multi sort '/'
     			"FACTORY_ID,SUBJECT,DOC_TYPE,ROUTE_CODE,ROUTE_NAME,TYPE_4M,FACTORY_GUBUN,FACTORY_CODE,FACTORY_NAME,LOT_ID,RULE_OUT,INITIATOR_NAME",// set search field
@@ -182,7 +186,7 @@ public class WNCollection {
     			"ppap", // set index name
     			"ppap", // set collection name
     			"0,3",  // set pageinfo (start,count)
-    			"1,0,0,0,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
+    			"1,1,1,1,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
     			"RANK/DESC,DATE/DESC",  // set sort field (field,order) multi sort '/'
     			"basic,rpfmo,100",  // set sort field (field,order) multi sort '/'
     			"DOCID,BIZ_PLACE,PPAP_NO,SUBJECT,STEP_LEVEL,INITIATOR_NAME,STATUS",// set search field
@@ -211,10 +215,10 @@ public class WNCollection {
     			"ecn", // set index name
     			"ecn", // set collection name
     			"0,3",  // set pageinfo (start,count)
-    			"1,0,0,0,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
+    			"1,1,1,1,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
     			"RANK/DESC,DATE/DESC",  // set sort field (field,order) multi sort '/'
     			"basic,rpfmo,100",  // set sort field (field,order) multi sort '/'
-    			"DOCID,OWN_OUTSOURCED,ROUTE_CODE,ROUTE_NAME,DOC_NO,SUBJECT,GRADE_CLASS,GRADE,INITIATOR_ID,INITIATOR_NAME,STATUS,REG_ID,MODI_ID,MANAGER_ID,MANAGER_NAME,STEP_NUMBER,PARENT_PROCESS_ID",// set search field
+    			"DOCID,FACTORY_ID,OWN_OUTSOURCED,ROUTE_CODE,ROUTE_NAME,DOC_NO,SUBJECT,GRADE_CLASS,GRADE,INITIATOR_ID,INITIATOR_NAME,STATUS,REG_ID,MODI_ID,MANAGER_ID,MANAGER_NAME,STEP_NUMBER,PARENT_PROCESS_ID",// set search field
     			"DOCID,FACTORY_ID,OWN_OUTSOURCED,ROUTE_CODE,ROUTE_NAME,DOC_NO,SUBJECT,GRADE_CLASS,GRADE,INITIATOR_ID,INITIATOR_NAME,STEP1_ENDDATE,STEP1_PIID,STEP2_ENDDATE,STEP2_PIID,STEP3_ENDDATE,STEP3_PIID,STEP4_ENDDATE,STEP4_PIID,STEP5_ENDDATE,STEP5_PIID,STEP6_ENDDATE,STEP6_PIID,STEP7_ENDDATE,STEP7_PIID,STEP8_ENDDATE,STEP8_PIID,STATUS,REG_ID,DATE,MODI_ID,MODI_DATE,MANAGER_ID,MANAGER_NAME,STEP_NUMBER,PARENT_PROCESS_ID,ISDISPLAY,ALIAS",// set document field
     			"", // set date range
     			"", // set rank range
@@ -240,7 +244,7 @@ public class WNCollection {
     			"change", // set index name
     			"change", // set collection name
     			"0,3",  // set pageinfo (start,count)
-    			"1,0,0,0,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
+    			"1,1,1,1,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
     			"RANK/DESC,DATE/DESC",  // set sort field (field,order) multi sort '/'
     			"basic,rpfmo,100",  // set sort field (field,order) multi sort '/'
     			"BIZ_PLACE,FAULT_NAME,GRADE,SUBMIT,Quality_ID,SUBJECT,REQ_RETURN_DATE,SZPROGRESS,REC_QUALITY_ID,INITIATOR_ID,INITIATOR_NAME,CS_QUALITY_NAME,REC_QUALITY_NAME,MANAGER_ID,MANAGER_NAME,PARENT_PROCESS_ID,DROP_REASON,REC_STEP1_NAME,MAIN_ROUTE_NAME,SIMSA_GUBUN,SELF_GUBUN,RE_OCCUR,COMNAME",// set search field
@@ -269,7 +273,7 @@ public class WNCollection {
     			"ocap", // set index name
     			"ocap", // set collection name
     			"0,3",  // set pageinfo (start,count)
-    			"1,0,0,0,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
+    			"1,1,1,1,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
     			"RANK/DESC,DATE/DESC",  // set sort field (field,order) multi sort '/'
     			"basic,rpfmo,100",  // set sort field (field,order) multi sort '/'
     			"FACTORY_ID,SUBJECT,DOC_TYPE,ROUTE_NAME,TYPE_4M,FACTOR_GUBUN,FACTOR_NAME,LOT_ID,RULE_OUT,INITIATOR_NAME",// set search field
@@ -298,7 +302,7 @@ public class WNCollection {
     			"analysis", // set index name
     			"analysis", // set collection name
     			"0,3",  // set pageinfo (start,count)
-    			"1,0,0,0,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
+    			"1,1,1,1,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
     			"RANK/DESC,DATE/DESC",  // set sort field (field,order) multi sort '/'
     			"basic,rpfmo,100",  // set sort field (field,order) multi sort '/'
     			"SUBJECT,INITIATOR_ID,INITIATOR_NAME,MANAGER_ID,MANAGER_NAME,PARENT_PROCESS_ID,STATUS,deveplop,COMCODE,SUPPROGRESS,BUMUN,PROGRESSCODE,PROGRESS,SEVERITY,MODEL,LOTNO,Environmental_Test,Mechanical_Analysis,Micro-Analysis,Measurement,Electrical_Test,Other,Result1,Result2,Result3,PSTATUS,PROGRESS1",// set search field
@@ -327,7 +331,7 @@ public class WNCollection {
     			"library1", // set index name
     			"library1", // set collection name
     			"0,3",  // set pageinfo (start,count)
-    			"1,0,0,0,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
+    			"1,1,1,1,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
     			"RANK/DESC,DATE/DESC",  // set sort field (field,order) multi sort '/'
     			"basic,rpfmo,100",  // set sort field (field,order) multi sort '/'
     			"Gubun,Plant,ProcessName,FacilitiesName,Only,ToWhere,SomethingElse,ByWhatMeans,HowMuch,ForeignForm,ForeignSize,ForeignColor,Requester,Creator,EntryNo,FTIR_Result,EDS,BODY",// set search field
@@ -356,7 +360,7 @@ public class WNCollection {
     			"library2", // set index name
     			"library2", // set collection name
     			"0,3",  // set pageinfo (start,count)
-    			"1,0,0,0,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
+    			"1,1,1,1,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
     			"RANK/DESC,DATE/DESC",  // set sort field (field,order) multi sort '/'
     			"basic,rpfmo,100",  // set sort field (field,order) multi sort '/'
     			"Gubun,Product,Color,Plant,ProcessName,Line,Maker,Model,ETC,EntryNo,FTIR_Result,BODY,EDS,Creator,INSERTED",// set search field
@@ -385,11 +389,11 @@ public class WNCollection {
     			"raw", // set index name
     			"raw", // set collection name
     			"0,3",  // set pageinfo (start,count)
-    			"1,0,0,0,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
+    			"1,1,1,1,0", // set query analyzer (useKMA,isCase,useOriginal,useSynonym, duplcated detection)
     			"RANK/DESC,DATE/DESC",  // set sort field (field,order) multi sort '/'
     			"basic,rpfmo,100",  // set sort field (field,order) multi sort '/'
-    			"DOCID,keyProcess,Manufacturer,MaterialsName,Subject,MaterialsType,INITIATOR_ID,INITIATOR_UNIT_ID,DisplayName",// set search field
-    			"DOCID,keyProcess,Manufacturer,MaterialsName,Subject,MaterialsType,INITIATOR_ID,INITIATOR_UNIT_ID,STEP_1,STEP_1_PIID,STEP_2,STEP_2_PIID,STEP_3,STEP_3_PIID,STEP_4,STEP_4_PIID,STEP_5,STEP_5_PIID,STEP_STATUS,DATE,DisplayName,ALIAS",// set document field
+    			"DOCID,keyProcess,Manufacturer,MaterialsName,SUBJECT,MaterialsType,INITIATOR_ID,INITIATOR_UNIT_ID,DisplayName",// set search field
+    			"DOCID,keyProcess,Manufacturer,MaterialsName,SUBJECT,MaterialsType,INITIATOR_ID,INITIATOR_UNIT_ID,STEP_1,STEP_1_PIID,STEP_2,STEP_2_PIID,STEP_3,STEP_3_PIID,STEP_4,STEP_4_PIID,STEP_5,STEP_5_PIID,STEP_STATUS,DATE,DisplayName,ALIAS",// set document field
     			"", // set date range
     			"", // set rank range
     			"", // set prefix query, example: <fieldname:contains:value1>|<fieldname:contains:value2>/1,  (fieldname:contains:value) and ' ', or '|', not '!' / operator (AND:1, OR:0)

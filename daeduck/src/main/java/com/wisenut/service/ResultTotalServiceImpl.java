@@ -34,10 +34,16 @@ public class ResultTotalServiceImpl implements ResultManagement {
 			for (int i = 0; i < count; i++) {
 				Map<String, Object> result = new HashMap<>();
 
-				String[] result_fields = wnSearch.getWNCollection().COLLECTION_INFO[collTarget][WNDefine.RESULT_FIELD]
-						.split(",");
+				String[] result_fields = wnSearch.getWNCollection().COLLECTION_INFO[collTarget][WNDefine.RESULT_FIELD].split(",");
 				for (String value:result_fields) {
-					result.put(value, wnSearch.getField(colName, value, i, false));
+					String search_result = "";
+					if(value.equals("INITIATOR_NAME")) {
+						search_result = wnSearch.getField(colName, value, i, false).split(";")[0];
+					}
+					else {
+						search_result = wnSearch.getField(colName, value, i, false);
+					}
+					result.put(value,search_result);
 				}
 
 				list.add(result);

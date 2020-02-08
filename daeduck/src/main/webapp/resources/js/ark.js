@@ -56,7 +56,7 @@ var OPERA_LEFT_OFFSET = 0;
 
 /** ARK 구성요소의 위치 및 크기를 아래 변수를 통해 조정함. **/
 var arkWidth = 37;								// 자동완성 전체 넓이 값을 설정한다(변동폭).
-var arkTop = 29;								// 자동완성 상단에서의 위치 값을 설정한다.
+var arkTop = 5;								// 자동완성 상단에서의 위치 값을 설정한다.
 var arkLeft = -3;								// 자동완성 왼쪽에서의 위치 값을 설정한다.
 var arkImgTop = 26;								// 자동완성 화살표 이미지의 상단에서 위치 값을 설정한다.
 var arkImgLeft = 26;							// 자동완성 화살표 이미지의 왼쪽에서 위치 값을 설정한다.
@@ -206,21 +206,22 @@ function drawArk() {
 	var str;
 
 	// 자동완성 접기/펼침 이미지 생성
-	str = "<div id=\"" + arkDownId + "\" style=\"position:absolute; display:block; cursor:pointer;\"><img id=\"" + imgDownId + "\" src=\"" + arkPath + "/img/arrow_auto.gif\" alt=\"자동완성펼치기\"></div>";
-	str += "<div id=\"" + arkUpId + "\" style=\"position:absolute; display:none; cursor:pointer;\"><img id=\"" + imgUpId + "\" src=\"" + arkPath + "/img/arrow_auto2.gif\" alt=\"자동완성접기\" ></div>";
+	str = "<div id=\"" + arkDownId + "\" style=\"position:absolute; display:block; cursor:pointer;\"></div>";
+	str += "<div id=\"" + arkUpId + "\" style=\"position:absolute; display:none; cursor:pointer;\"></div>";
 	
 	// 툴팁 이미지 생성
 	str += "<div id=\"tooltip01\" style=\"position:absolute; display:none; cursor:pointer; z-index:999999;\"><img id=\"tooltipIcon01\" src=\"" + arkPath +"/img/tooltip_01.gif\"/></div>";
 
 	// 자동완성 결과 생성
-	str += "<div class=\"ark_wrap\" id=\"" + wrapId +"\">";
+	str += "<div class=\"ark_wrap\" id=\"" + wrapId +"\" style='background-color:white'>";
+	
 	str += "	<ul>";
 	str += "		<li class=\"ark_content\" >";
 	str += "			<ul class=\"fl\" id=\"" + contentListId + "\"></ul>";
 	str += "		</li>";
 	str += "		<li class=\"ark_footer\" id=\"" + footerId +"\"></li>";
 	str += "	</ul>";
-	str += "</div>";
+	//str += "</div>";
 
 	$(arkId).html(str);
 }

@@ -4,160 +4,335 @@
 	language="java"%>
 
 <html>
+
 <head>
-<title>통합검색 페이지</title>
-<meta charset="UTF-8" />
-<script src="/resources/js/jquery.min.js"></script>
-<script src="/resources/js/jquery-ui.min.js"></script>
-<script src="/resources/js/beta.fix.js"></script>
-
-<script src="/resources/js/ark.js"></script>
-
-<!--
-<script src="/resources/js/autocomplete.js"></script>
--->
-<script src="/resources/js/category.js"></script>
-<script src="/resources/js/popular.js"></script>
-<script src="/resources/js/search.js"></script>
-<script src="/resources/js/datepicker.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.2/handlebars.js"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+	<meta name="viewport"
+		content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>대덕전자 통합검색</title>
 
 
-<link rel="stylesheet" type="text/css" href="/resources/css/sidebar_menu.css" />
-<link rel="stylesheet" type="text/css" href="/resources/css/searchbox.css" />
-<link rel="stylesheet" type="text/css" href="/resources/css/popular.css" />
-<link rel="stylesheet" type="text/css" href="/resources/css/mykeyword.css" />   
+	<script src="/resources/js/jquery.min.js"></script>
+	<script src="/resources/js/jquery-ui.min.js"></script>
+	<script src="/resources/js/beta.fix.js"></script>
+	<%-- <script src="/resources/js/ark.js"></script> --%>
+	<script src="/resources/js/autocomplete.js"></script>
+	<script src="/resources/js/category.js"></script>
+	<script src="/resources/js/popular.js"></script>
+	<script src="/resources/js/search.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.2/handlebars.js"></script>
+	<script src="/resources/js/popular.js"></script>
+	<script src="/resources/js/recommend.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="/resources/css/search_sty.css">
+	<link rel="stylesheet" type="text/css" href="/resources/css/default.css">
+	<link rel="stylesheet" type="text/css" href="/resources/css/popular.css" />
+	<link rel="stylesheet" type="text/css" href="/resources/css/mykeyword.css" />
+	<link rel="stylesheet" type="text/css" href="/resources/css/jquery-ui.css" />
 </head>
+
 <body>
+	<div class="wrapper">
+		<div class="wrap">
 
-	<!-- 카테고리 그룹 -->
-	<!-- 
-	<div ><a id="category" href="javascript:getCategory()">${category }</a></div>
-	-->
-
-	<%@ include file="./searchbox/searchbox.jsp"%>
-
-
-
-	
-	<%@ include file="./sidenav/sidenav.jsp"%>
-	
-
-	<%@ include file="./popular/popular.jsp"%>
-
-	<ul class="mykeyword" id="mykeyword">
-	</ul>
-
-	<div class="main">
-		<div>통합 검색 결과 수: ${totalCount}</div>
-		<div>전자결재 검색 결과 --> ${Appcount }</div>
-		
-		<c:forEach var="entry" items="${total.APP }">
-			<div>
-				<a href="#" 
-				onClick="javascript:popupOpen('https://gw.portal.daeduck.com/Website/Approval/Forms/Form.aspx?mode=COMPLETE&piid=${entry.DOCID }','전자결재','width=950','')">FORM_NAME:
-					${entry.FORM_NAME }</a>
+			<div class="header_wrap">
+				<!--header -->
+				<%@ include file="./searchbox/searchbox.jsp"%>
 			</div>
-			<div>BODY: ${entry.BODY }</div>
-			<div>SUBJECT: ${entry.SUBJECT }</div>
-			<div>AUTHORITY${entry.AUTHORITY }</div>
-			<div>TYPE: ${entry.TYPE }</div>
-			<div>DATE : ${entry.DATE  }</div>
-			
-			<div>TechnologyDOC : ${entry.TechnologyDOC  }</div>
-			<hr>
-		</c:forEach>
-		
-		
-		<hr>
-		<hr>
-		<div>게시판 검색 결과 --> ${Bbscount }</div>
-		<c:forEach var="entry" items="${total.BBS }">
-			<c:if test="${!empty entry}">
-			<div>
-				SUBJECT:<a href='https://gw.portal.daeduck.com/WebSite/Basic/Board/BoardView.aspx?system=Board&BoardType=Normal&fdid=${entry.FD_ID}&MsgId=${entry.DOCID}&BoardGubun=Normal' target=" _blank"> ${entry.SUBJECT }</a>
+		</div>
+		<!-- //header_wrap-->
+
+		<!-- container_wrap -->
+		<div class="container_wrap">
+			<!-- container -->
+			<div class="container">
+				<!-- leftArea -->
+				<div class="leftArea">
+					<%@ include file="./sidenav/sidenav.jsp"%>
+				</div>
+				<!--//leftArea-->
+
+
+				<!-- contents -->
+				<div class="contents">
+					<div class="result_top">
+						검색어 <strong>${value.query}</strong>에 대한 통합검색 결과 입니다.
+					</div>
+					<!-- 전자결재 -->
+					<div class="sectit01">
+						<h2>
+							<span>전자결재</span><span>${APPcount}</span>
+						</h2>
+						<c:forEach var="entry" items="${total.APP }">
+							<dl class="resultsty">
+								<dt>
+									<a class="tit" href="#"
+										onClick="javascript:popupOpen('https://gw.portal.daeduck.com/Website/Approval/Forms/Form.aspx?mode=COMPLETE&piid=${entry.DOCID }','전자결재','width=950','')">
+										${entry.SUBJECT }
+									</a>
+									<dl class="sort">
+										<dt>기안자 :</dt>
+										<dd>${entry.INITIATOR_NAME }</dd>
+										<dt>기안일 :</dt>
+										<dd>${entry.INITIATED_DATE }</dd>
+										<dt>분류 :</dt>
+										<dd>${entry.FOLDER_NAME}</dd>
+									</dl>
+								</dt>
+								<dd class="cont">
+									${entry.BODY}
+								</dd>
+								<dd class="info">
+									${entry.TYPE}
+								</dd>
+								<dd>
+									<ul class="attch_file">
+										<li class="file_xls">
+											<a href="#" class="doc_type">
+												${entry.ATTACHNAME}
+											</a>
+											<div class="preview">
+												첨부파일 미리보기...
+											</div>
+										</li>
+									</ul>
+								</dd>
+							</dl>
+						</c:forEach>
+						<a href="#" onClick="javascript:doCollection('app')" class="btn_more">결과 더보기</a>
+					</div>
+
+					<!-- 통합게시판 -->
+					<div class="sectit01">
+						<h2>
+							<span>통합게시판</span><span>${BBScount}</span>
+						</h2>
+						<c:forEach var="entry" items="${total.BBS }">
+							<dl class="resultsty">
+								<dt>
+									<a class="tit" href="#"
+										onClick="javascript:popupOpen('https://gw.portal.daeduck.com/Website/Approval/Forms/Form.aspx?mode=COMPLETE&piid=${entry.DOCID }','전자결재','width=950','')">
+										${entry.SUBJECT }</a>
+									<dl class="sort">
+										<dt>기안자 :</dt>
+										<dd>${entry.INITIATOR_NAME }</dd>
+										<dt>기안일 :</dt>
+										<dd>${entry.INITIATED_DATE }</dd>
+										<dt>분류 :</dt>
+										<dd>${entry.FOLDER_NAME}</dd>
+									</dl>
+								</dt>
+								<dd class="cont">
+									${entry.BODY}
+								</dd>
+								<dd class="info">
+									${entry.FolderName}
+								</dd>
+								<dd>
+									<ul class="attch_file">
+										<li class="file_xls">
+											<a href="#" class="doc_type">
+												${entry.ATTACHNAME}
+											</a>
+											<div class="preview">
+												첨부파일 미리보기...
+											</div>
+										</li>
+									</ul>
+								</dd>
+							</dl>
+						</c:forEach>
+						<a href="#" class="btn_more">결과 더보기</a>
+					</div>
+
+					<!-- 표준문서 -->
+					<div class="sectit01">
+						<h2>
+							<span>표준문서</span><span>${STANDARDcount}</span>
+						</h2>
+						<c:forEach var="entry" items="${total.STANDARD }">
+							<dl class="resultsty">
+								<dt>
+									<a href="#"
+										onClick="javascript:popupOpen('https://gw.portal.daeduck.com/Website/Approval/Forms/Form.aspx?mode=COMPLETE&piid=${entry.DOCID }','전자결재','width=950','')">
+										${entry.SUBJECT }
+									</a>
+									<dl class="sort">
+										<dt>기안자 :</dt>
+										<dd>${entry.CreatorName }</dd>
+										<dt>기안일 :</dt>
+										<dd>${entry.DATE }</dd>
+										<dt>분류 :</dt>
+										<dd>${entry.FOLDER_NAME}</dd>
+									</dl>
+
+								</dt>
+								<dd class="cont">
+									${entry.BODY}
+								</dd>
+								<dd>
+									<ul class="attch_file">
+										<li class="file_xls">
+											<a href="#" class="doc_type">
+												${entry.ATTACHNAME}
+											</a>
+											<div class="preview">
+												첨부파일 미리보기...
+											</div>
+										</li>
+									</ul>
+								</dd>
+							</dl>
+						</c:forEach>
+					</div>
+
+					<!-- 기술문서 -->
+
+					<div class="sectit01">
+						<h2>
+							<span>기술문서</span><span>${TECHNOLOGYcount}</span>
+						</h2>
+						<c:forEach var="entry" items="${total.TECHNOLOGY }">
+							<dl class="resultsty">
+								<dt>
+									<a class="tit" href="#"
+										onClick="javascript:popupOpen('https://gw.portal.daeduck.com/Website/Approval/Forms/Form.aspx?mode=COMPLETE&piid=${entry.DOCID }','전자결재','width=950','')">
+										${entry.SUBJECT }
+									</a>
+									<dl class="sort">
+										<dt>기안자 :</dt>
+										<dd>${entry.INITIATOR_NAME }</dd>
+										<dt>기안일 :</dt>
+										<dd>${entry.INITIATED_DATE }</dd>
+										<dt>분류 :</dt>
+										<dd>${entry.FOLDER_NAME}</dd>
+									</dl>
+								</dt>
+								<dd class="cont">
+									${entry.BODY}
+								</dd>
+								<dd class="info">
+									${entry.TYPE}
+								</dd>
+								<dd>
+									<ul class="attch_file">
+										<li class="file_xls">
+											<a href="#" class="doc_type">
+												${entry.ATTACHNAME}
+											</a>
+											<div class="preview">
+												첨부파일 미리보기...
+											</div>
+										</li>
+									</ul>
+								</dd>
+							</dl>
+						</c:forEach>
+						<a href="#" class="btn_more">결과 더보기</a>
+					</div>
+
+					<!-- 품질관리 -->
+					<div class="sectit01">
+						<h2>
+							<span>전자결재</span><span>${totalCount}</span>
+						</h2>
+						<c:forEach var="entry" items="${total.APP }">
+							<dl class="resultsty">
+								<dt>
+									<a href="#"
+										onClick="javascript:popupOpen('https://gw.portal.daeduck.com/Website/Approval/Forms/Form.aspx?mode=COMPLETE&piid=${entry.DOCID }','전자결재','width=950','')">
+										${entry.SUBJECT }
+									</a>
+
+								<dt>기안자 :</dt>
+								<dl>${entry.INITIATOR_NAME }</dl>
+								<dt>기안일 :</dt>
+								<dl>${entry.INITIATED_DATE }</dl>
+								<dt>분류 :</dt>
+								<dl>${entry.FOLDER_NAME}</dl>
+								</dt>
+								<dd class="cont">
+									${entry.BODY}
+								</dd>
+								<dd class="info">
+									${entry.TYPE}
+								</dd>
+								<dd>
+									<ul class="attch_file">
+										<li class="file_xls">
+											<a href="#" class="doc_type">
+												${entry.ATTACHNAME}
+											</a>
+											<div class="preview">
+												첨부파일 미리보기...
+											</div>
+										</li>
+									</ul>
+								</dd>
+							</dl>
+						</c:forEach>
+					</div>
+				</div>
+				<!-- //contenst -->
+
+				<!-- rightArea -->
+				<div class="rightArea">
+					<dl class="rank">
+						<%@ include file="./popular/popular.jsp"%>
+					</dl>
+					<dl class="keyword">
+						<dt>내가 찾은 검색어</dt>
+						<dd>
+							<ul id="mykeyword">
+								
+							</ul>
+						</dd>
+					</dl>
+					<dl class="recommend">
+						<dt>개인화 문서 추천</dt>
+						<dd>
+							<ul id="recommend">
+								<%-- <li>
+									<a href="#">2018년도 업무용 자동차(건설기계)보험 가입.zip</a>
+								</li>
+								<li>
+									<a href="#">2018년도 업무용 자동차(건설기계)보험 가입.zip</a>
+								</li>
+								<li>
+									<a href="#">2018년도 업무용 자동차(건설기계)보험 가입.zip</a>
+								</li>
+								<li>
+									<a href="#">2018년도 업무용 자동차(건설기계)보험 가입.zip</a>
+								</li>
+								<li>
+									<a href="#">2018년도 업무용 자동차(건설기계)보험 가입.zip</a>
+								</li> --%>
+							</ul>
+						</dd>
+					</dl>
+				</div>
+				<!-- //rightArea -->
+
 			</div>
-			<div>BODY: ${entry.BODY }</div>
-			<div>CreatorName: ${entry.CreatorName }</div>
-			<div>FolderPath: ${entry.FolderPath }</div>
-			<div>Authority1: ${entry.Authority1 }</div>
-			<div>DATE : ${entry.DATE  }</div>
-			<hr>
-			</c:if>
-		</c:forEach>
-		<hr>
-		<hr>
-		<div>표준문서 검색 결과 --> ${standardcount }</div>
-		<c:forEach var="entry" items="${total.STANDARD }">
+		</div>
+		<!-- container_wrap-->
 
-			<div>Subject: <a href="#" 
-			onClick="javascript:popupOpen('https://gw.portal.daeduck.com/WebSite/Basic/Board/BoardView.aspx?system=Board.ISO&BoardType=Normal&fdid=${entry.FD_ID}&MsgId=${entry.DOCID}&BoardGubun=ISO','표준문서', 'width=950','')">${entry.SUBJECT }</a></div>
-			<div>Body: ${entry.BODY }</div>
-			<div>CreatorName: ${entry.CreatorName }</div>
-			<div>FolderPath: ${entry.FolderPath }</div>
-			<div>DATE : ${entry.DATE  }</div>
-			<hr>
-		</c:forEach>
-
-		<hr>
-		<hr>
-		<div>기술문서 검색 결과 --> ${Technologycount }</div>
-		<c:forEach var="entry" items="${total.TECHNOLOGY }">
-			<div>
-				<a href="#" 
-				onClick="javascript:popupOpen('https://gw.portal.daeduck.com/Website/Approval/Forms/Form.aspx?mode=COMPLETE&piid=${entry.DOCID }','전자결재','width=950','')">FORM_NAME:
-					${entry.FORM_NAME }</a>
-			</div>
-			<div>BODY: ${entry.BODY }</div>
-			<div>SUBJECT: ${entry.SUBJECT }</div>
-			<div>AUTHORITY${entry.AUTHORITY }</div>
-			<!--div>TYPE: ${entry.TYPE }</div-->
-			<div>DATE : ${entry.DATE  }</div>
-			<div>TechnologyDOC : ${entry.TechnologyDOC  }</div>
-			<hr>
-		</c:forEach>
-		<hr>
-		<hr>
-		<div>품질관리 검색 결과</div>
-		<div>ECN</div>
-		<c:forEach var="entry" items="${totalQuality.ECN }">
-
-			<div>DOCID: ${entry.DOCID }</div>
-			<div>FACTORY_ID : ${entry.FACTORY_ID  }</div>
-			<div>OWN_OUTSOURCED : ${entry.OWN_OUTSOURCED  }</div>   
-			<div>ROUTE_CODE : ${entry.ROUTE_CODE  }</div>
-			<div>DATE : ${entry.DATE  }</div>
-			<div>DATE : ${entry.DATE  }</div>
-			<hr>
-		</c:forEach>
-		<div>MRB</div>
-		<c:forEach var="entry" items="${totalQuality.MRB }">
-
-			<div>DOCID: ${entry.DOCID }</div>
-			<div>FACTORY_ID : ${entry.FACTORY_ID  }</div>
-			<div>SUBJECT : ${entry.SUBJECT  }</div>
-			<div>DOC_TYPE : ${entry.DOC_TYPE  }</div>
-			<div>DATE : ${entry.DATE  }</div>
-			<hr>
-		</c:forEach>
-		<div>PPAP</div>
-		<c:forEach var="entry" items="${totalQuality.PPAP }">
-
-			<div>DOCID: ${entry.DOCID }</div>
-			<div>BIZ_PLACE : ${entry.BIZ_PLACE  }</div>
-			<div>PPAP_NO : ${entry.PPAP_NO  }</div>
-			<div>SUBJECT : ${entry.SUBJECT  }</div>
-			<div>DATE : ${entry.DATE  }</div>
-			<hr>
-		</c:forEach>
+		
 	</div>
+	<!-- //wrap -->
 
-	<div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div>
+
+
+
+
+	<%-- <ul class="mykeyword" id="mykeyword"> --%>
+
+
 </body>
 
 <script>
-	getMyKeyword('${value.query}','${totalCount}');
+	getMyKeyword('${value.query}', '${totalCount}');
 </script>
 
 </html>
